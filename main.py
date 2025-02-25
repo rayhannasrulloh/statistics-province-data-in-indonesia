@@ -5,18 +5,32 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-st.header("Area and Number of Islands by Province, 2023")
+st.header("Area and Number of Islands by Province, 2023", divider="red")
+file_path = "Luas Daerah dan Jumlah Pulau Menurut Provinsi, 2023 Me.xlsx"
 
 @st.cache_data
 def load_data():
-    file_path = "Luas Daerah dan Jumlah Pulau Menurut Provinsi, 2023 Me.xlsx"
     df = pd.read_excel(file_path)
     return df[df["Provinsi"] != "Indonesia"].reset_index(drop=True)  # hapus baris "Indonesia"
 
 df = load_data()
 
+@st.cache_data
+def load_excel_sheets(file_path):
+    xls = pd.ExcelFile(file_path)
+    sheets_dict = {sheet: pd.read_excel(xls, sheet_name=sheet) for sheet in xls.sheet_names}
+    return sheets_dict
+
+sheets = load_excel_sheets(file_path)
+
 #sidebar
-st.sidebar.header("Area and Number of Islands by Province, 2023")
+st.sidebar.header("Area and Number of Islands by Province, 2023", divider="red")
+# Sidebar untuk memilih sheet
+selected_sheet = st.sidebar.selectbox("Choose Sheet:", list(sheets.keys()))
+df_selected = sheets[selected_sheet]
+# Tampilkan tabel
+st.subheader(f"Table: {selected_sheet}")
+st.dataframe(df_selected)
 st.sidebar.subheader("Subject : Probability and Statistics")
 st.sidebar.write("1. Rayhan Roshidi Nasrulloh | 001202400007")
 st.sidebar.write("2. Syah Reza Palevi | 001202400033")
@@ -34,6 +48,8 @@ with tab1:
     ax.set_xlabel("Luas Wilayah (Km²)")
     ax.set_ylabel("Provinsi")
     st.pyplot(fig)
+    st.write("1. From the data above, the province with the largest area is Central Kalimantan province.")
+    st.write("2. From the data above, the province with the smallest area is the Special Capital Region of Jakarta.")
 
     st.subheader("Bar Chart - Number of Islands per Province")
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -42,6 +58,8 @@ with tab1:
     ax.set_xlabel("Jumlah Pulau")
     ax.set_ylabel("Provinsi")
     st.pyplot(fig)
+    st.write("1. From the data above, the province with the largest number of islands is Southwest Papua.")
+    st.write("2. From the data above, the province with the smallest number of islands is Papua Pegunungan.")
 
     st.subheader("Pie Chart - Area Percentage")
     fig, ax = plt.subplots(figsize=(8, 8))
