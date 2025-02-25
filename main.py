@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-st.header("Visualization of Provincial Data in Indonesia")
+st.header("Area and Number of Islands by Province, 2023")
 
 @st.cache_data
 def load_data():
@@ -16,7 +16,7 @@ def load_data():
 df = load_data()
 
 #sidebar
-st.sidebar.header("Visualization of Provincial Data in Indonesia")
+st.sidebar.header("Area and Number of Islands by Province, 2023")
 st.sidebar.subheader("Subject : Probability and Statistics")
 st.sidebar.write("1. Rayhan Roshidi Nasrulloh | 001202400007")
 st.sidebar.write("2. Syah Reza Palevi | 001202400033")
