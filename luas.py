@@ -1,51 +1,57 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import pandas as pd
 
-# Define the path to the Excel file
-xls = "Luas Daerah dan Jumlah Pulau Menurut Provinsi, 2023 Me.xlsx"
+# Define the coefficient matrix and constants vector
+A = np.array([
+    [1, 1, 1, 1],
+    [2, 3, 4, 5],
+    [0, 1, 0, 2],
+    [1, 2, 0, 1]
+])
 
-# Load the first sheet
-df = pd.read_excel(xls, sheet_name="Sheet1")
+b = np.array([5, 1, 1, 3])
 
-# Display the first few rows to understand the structure
-df.head()
+# Calculate the determinant of the coefficient matrix
+det_A = np.linalg.det(A)
+print(f"det(A) = {det_A}")
 
-# Menghapus baris yang berisi data total "Indonesia"
-df_cleaned = df[df["Provinsi"] != "Indonesia"].reset_index(drop=True)
-# Set style for visualization
-sns.set(style="whitegrid")
+# Create matrices for each variable by replacing columns with b
+A1 = A.copy()
+A1[:, 0] = b
+det_A1 = np.linalg.det(A1)
+print(f"det(A1) = {det_A1}")
 
-# Figure setup
-fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+A2 = A.copy()
+A2[:, 1] = b
+det_A2 = np.linalg.det(A2)
+print(f"det(A2) = {det_A2}")
 
-# Visualisasi ulang tanpa data Indonesia
-fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+A3 = A.copy()
+A3[:, 2] = b
+det_A3 = np.linalg.det(A3)
+print(f"det(A3) = {det_A3}")
 
-# Bar Chart - Luas Wilayah per Provinsi
-df_sorted_luas = df_cleaned.sort_values(by="Luas Wilayah (Km2)", ascending=False)
-sns.barplot(x=df_sorted_luas["Luas Wilayah (Km2)"], y=df_sorted_luas["Provinsi"], ax=axes[0, 0], palette="viridis")
-axes[0, 0].set_title("Luas Wilayah per Provinsi (Km²)")
-axes[0, 0].set_xlabel("Luas Wilayah (Km²)")
-axes[0, 0].set_ylabel("Provinsi")
+A4 = A.copy()
+A4[:, 3] = b
+det_A4 = np.linalg.det(A4)
+print(f"det(A4) = {det_A4}")
 
-# Bar Chart - Jumlah Pulau per Provinsi
-df_sorted_pulau = df_cleaned.sort_values(by="Jumlah Pulau", ascending=False)
-sns.barplot(x=df_sorted_pulau["Jumlah Pulau"], y=df_sorted_pulau["Provinsi"], ax=axes[0, 1], palette="coolwarm")
-axes[0, 1].set_title("Jumlah Pulau per Provinsi")
-axes[0, 1].set_xlabel("Jumlah Pulau")
-axes[0, 1].set_ylabel("Provinsi")
+# Apply Cramer's Rule
+x1 = det_A1 / det_A
+x2 = det_A2 / det_A
+x3 = det_A3 / det_A
+x4 = det_A4 / det_A
 
-# Pie Chart - Distribusi Luas Wilayah
-axes[1, 0].pie(df_cleaned["Persentase Terhadap Luas Wilayah"], labels=df_cleaned["Provinsi"], autopct='%1.1f%%', startangle=140, colors=sns.color_palette("Set3", len(df_cleaned)))
-axes[1, 0].set_title("Persentase Luas Wilayah per Provinsi")
+print("\nSolution:")
+print(f"x1 = {x1}")
+print(f"x2 = {x2}")
+print(f"x3 = {x3}")
+print(f"x4 = {x4}")
 
-# Scatter Plot - Hubungan Luas Wilayah dan Jumlah Pulau
-sns.scatterplot(x=df_cleaned["Luas Wilayah (Km2)"], y=df_cleaned["Jumlah Pulau"], hue=df_cleaned["Provinsi"], palette="tab20", ax=axes[1, 1], s=100, edgecolor='black')
-axes[1, 1].set_title("Hubungan Luas Wilayah dan Jumlah Pulau")
-axes[1, 1].set_xlabel("Luas Wilayah (Km²)")
-axes[1, 1].set_ylabel("Jumlah Pulau")
+# Verify the solution
+solution = np.array([x1, x2, x3, x4])
+verification = A @ solution
 
-plt.tight_layout()
-plt.show()
+print("\nVerification:")
+print("Ax =", verification)
+print("b =", b)
+print("Is the solution correct?", np.allclose(verification, b))

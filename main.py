@@ -38,7 +38,7 @@ st.sidebar.write("3. Reza Fahlevi | 001202400066")
 st.sidebar.image("me.jpg", caption="WebDev by Rayhan")
 
 # display tabs
-tab1, tab2, tabs3 = st.tabs(["Visualization", "Statistics", "Discrete Probability"])
+tab1, tab2, tab3, tab4 = st.tabs(["Visualization", "Statistics", "Discrete Probability", "Probability Analysis"])
 
 #tab 1: Visualisasi
 with tab1:
@@ -68,7 +68,7 @@ with tab1:
     st.write("4. Some provinces have very few islands despite having a large land area (e.g., provinces in Kalimantan).")
 
     st.subheader("Pie Chart - Area Percentage")
-    fig, ax = plt.subplots(figsize=(8, 8))
+    fig, ax = plt.subplots(figsize=(10, 10))
     ax.pie(df["Persentase Terhadap Luas Wilayah"], labels=df["Provinsi"], autopct='%1.1f%%', startangle=140, colors=sns.color_palette("Set3", len(df)))
     st.pyplot(fig)
     st.write("**Conclusion :** ")
@@ -91,27 +91,32 @@ with tab1:
 
 #tab 2: Statistik
 with tab2:
-    st.subheader("Statistics Descriptive")
-    stats_summary = {
-        "Mean Luas Wilayah (Km²)": np.mean(df["Luas Wilayah (Km2)"]),
-        "Median Luas Wilayah (Km²)": np.median(df["Luas Wilayah (Km2)"]),
-        "Mode Luas Wilayah (Km²)": stats.mode(df["Luas Wilayah (Km2)"], keepdims=True).mode[0],
-        "Range Luas Wilayah (Km²)": np.ptp(df["Luas Wilayah (Km2)"]),
-        "Standard Deviation Luas Wilayah (Km²)": np.std(df["Luas Wilayah (Km2)"], ddof=1),
-        "Q1 (25th Percentile) Luas Wilayah": np.percentile(df["Luas Wilayah (Km2)"], 25),
-        "Q3 (75th Percentile) Luas Wilayah": np.percentile(df["Luas Wilayah (Km2)"], 75),
-        "Mean Jumlah Pulau": np.mean(df["Jumlah Pulau"]),
-        "Median Jumlah Pulau": np.median(df["Jumlah Pulau"]),
-        "Mode Jumlah Pulau": stats.mode(df["Jumlah Pulau"], keepdims=True).mode[0],
-        "Range Jumlah Pulau": np.ptp(df["Jumlah Pulau"]),
-        "Standard Deviation Jumlah Pulau": np.std(df["Jumlah Pulau"], ddof=1),
-        "Q1 (25th Percentile) Jumlah Pulau": np.percentile(df["Jumlah Pulau"], 25),
-        "Q3 (75th Percentile) Jumlah Pulau": np.percentile(df["Jumlah Pulau"], 75),
-    }
-    
-    st.write(pd.DataFrame(stats_summary, index=[0]).T)
+    st.header("Statistics Descriptive")
+    st.subheader("Statistics Descriptive Report")
+    st.image("data2/des1.png")
+    st.image("data2/des2.png")
+    st.image("data2/des3.png")
 
-with tabs3:
+    # stats_summary = {
+    #     "Mean Luas Wilayah (Km²)": np.mean(df["Luas Wilayah (Km2)"]),
+    #     "Median Luas Wilayah (Km²)": np.median(df["Luas Wilayah (Km2)"]),
+    #     "Mode Luas Wilayah (Km²)": stats.mode(df["Luas Wilayah (Km2)"], keepdims=True).mode[0],
+    #     "Range Luas Wilayah (Km²)": np.ptp(df["Luas Wilayah (Km2)"]),
+    #     "Standard Deviation Luas Wilayah (Km²)": np.std(df["Luas Wilayah (Km2)"], ddof=1),
+    #     "Q1 (25th Percentile) Luas Wilayah": np.percentile(df["Luas Wilayah (Km2)"], 25),
+    #     "Q3 (75th Percentile) Luas Wilayah": np.percentile(df["Luas Wilayah (Km2)"], 75),
+    #     "Mean Jumlah Pulau": np.mean(df["Jumlah Pulau"]),
+    #     "Median Jumlah Pulau": np.median(df["Jumlah Pulau"]),
+    #     "Mode Jumlah Pulau": stats.mode(df["Jumlah Pulau"], keepdims=True).mode[0],
+    #     "Range Jumlah Pulau": np.ptp(df["Jumlah Pulau"]),
+    #     "Standard Deviation Jumlah Pulau": np.std(df["Jumlah Pulau"], ddof=1),
+    #     "Q1 (25th Percentile) Jumlah Pulau": np.percentile(df["Jumlah Pulau"], 25),
+    #     "Q3 (75th Percentile) Jumlah Pulau": np.percentile(df["Jumlah Pulau"], 75),
+    # } st.write(pd.DataFrame(stats_summary, index=[0]).T)
+    
+
+with tab3:
+    st.header("Discrete Probability")
     st.subheader("Discrete Probability Distributions: Number of Islands per Province")
     st.image("data1.png")
     st.image("data2.png")
@@ -124,3 +129,10 @@ with tabs3:
     st.image("data/data (7).png")
     st.image("data/data (8).png")
     st.image("data/data (9).png")
+
+with tab4:
+    st.header("Probability Analysis")
+    st.subheader("Probability Analysis Report")
+    st.image("data3/prob1.png")
+    st.subheader("Conclusion")
+    st.write("This report applies *probability concepts* to **real-world geographical data**, illustrating various probability distributions and principles using actual provincial data.")
